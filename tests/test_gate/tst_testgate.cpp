@@ -9,18 +9,29 @@ class TestGate : public QObject {
     Q_OBJECT
 
 private slots:
-    void test_case1();
+    void test_normal();
+    void test_delayed();
 };
 
-void TestGate::test_case1()
+void TestGate::test_normal()
 {
-    Protocol p;
-    Gate g(&p);
+    MockProtocol m;
+    Gate g(m.p());
 
     g.openGate();
 
-    QCOMPARE(p.m_messages.size(), 1);
-    QCOMPARE(p.m_messages.at(0), "openGate");
+    QCOMPARE(m.m_messages.size(), 1);
+    QCOMPARE(m.m_messages.at(0), "openGate");
+}
+
+void TestGate::test_delayed()
+{
+    DelayedProtocol m;
+    Gate g(m.p());
+
+    g.openGate();
+
+    QCOMPARE(m.m_messages.size(), 0);
 }
 
 QTEST_MAIN(TestGate)
