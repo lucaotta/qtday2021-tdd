@@ -28,7 +28,9 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
 
 set(PROJECT_SOURCES
-        main.cpp
+        src/main.cpp
+        src/gate.cpp
+        src/protocol.cpp
         qml.qrc
 )
 
@@ -51,6 +53,8 @@ endif()
 
 target_compile_definitions(qtday2021-tdd
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+target_include_directories(qtday2021-tdd
+  PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
 target_link_libraries(qtday2021-tdd
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
 
@@ -64,3 +68,5 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(qtday2021-tdd)
     qt_finalize_executable(qtday2021-tdd)
 endif()
+
+add_subdirectory(tests/test_gate)
